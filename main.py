@@ -12,7 +12,7 @@ square_copy = []
 die = False
 pressed = False
 draw_mode = True
-width = 50
+width = 20
 delay_time = 2
 
 def detectNeighbours(scan_x, scan_y):
@@ -66,6 +66,9 @@ while not die:
         if ev.type == pygame.KEYDOWN and ev.key == pygame.K_DOWN:
             delay_time -= 1 if delay_time - 0.1 > 0 else 0
 
+        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_0:
+            square = []
+
     if not draw_mode:
         square_copy = []
         for item in square:
@@ -92,15 +95,17 @@ while not die:
 
             alive_neighbours = detectNeighbours(scan_x, scan_y)
 
-            if alive_neighbours in [2, 3] and len([x for x in item if x > 0 and x < screen_width // width]) == 2:
+            if alive_neighbours in [2, 3] and len([x for x in item if x > 0 and x < screen_width // width - 1]) == 2:
                 square_copy.append(item)
 
         square = copy.deepcopy(square_copy)
-        time.sleep(delay_time // 10)
+        time.sleep(delay_time / 10)
 
     for item in square:
         pygame.draw.rect(screen, [255, 255, 255], pygame.Rect(item[0]*width, item[1]*width, width, width))
 
+    print("-" * 30)
     print("Time delay:", delay_time)
+    print("DRAW_MODE" if draw_mode else "RUNNING")
 
     pygame.display.flip()
